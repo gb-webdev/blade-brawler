@@ -28,6 +28,13 @@ const player = new Fighter({
     offset: {
         x: 0,
         y: 0
+    },
+    imageSrc: './img/craftpix-net-572945-free-samurai-pixel-art-sprite-sheets/samurai/Idle.png',
+    framesMax: 6,
+    scale: 2.5,
+    offset: {
+        x: - 40,
+        y: 170
     }
 })
 
@@ -74,7 +81,8 @@ function animate() {
     c.fillRect(0, 0, canvas.width, canvas.height)
     background.update()
     player.update()
-    enemy.update()
+    // enemy.update()
+
     player.velocity.x = 0
     enemy.velocity.x = 0
 
