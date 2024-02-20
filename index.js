@@ -29,12 +29,22 @@ const player = new Fighter({
         x: 0,
         y: 0
     },
-    imageSrc: './img/craftpix-net-572945-free-samurai-pixel-art-sprite-sheets/samurai/Idle.png',
+    imageSrc: './img/sprite1/samurai/Idle.png',
     framesMax: 6,
     scale: 2.5,
     offset: {
         x: - 40,
         y: 170
+    },
+    sprites: {
+        idle : {
+            imageSrc: './img/sprite1/samurai/Idle.png',
+            framesMax: 6,
+        },
+        run : {
+            imageSrc: './img/sprite1/samurai/Run.png',
+            framesMax: 8,
+        }
     }
 })
 
@@ -54,9 +64,7 @@ const enemy = new Fighter({
     }
 })
 
-enemy.draw()
-
-console.log(player)
+// console.log(player)
 
 const keys = {
     a: {
@@ -73,7 +81,7 @@ const keys = {
     }
 }
 
-decreaseTimer(timer)
+decreaseTimer()
 
 function animate() {
     window.requestAnimationFrame(animate)
@@ -87,10 +95,13 @@ function animate() {
     enemy.velocity.x = 0
 
     // Player movement
+    player.image = player.sprites.idle.image
     if (keys.a.pressed && player.lastKey === 'a') {
         player.velocity.x = -5
+        player.image = player.sprites.run.image
     } else if (keys.d.pressed && player.lastKey === 'd') {
         player.velocity.x = 5
+        player.image = player.sprites.run.image
     }
 
     // Enemy movement
