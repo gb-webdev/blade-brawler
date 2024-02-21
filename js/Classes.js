@@ -19,19 +19,33 @@ class Sprite {
         this.offset = offset
         }
         
-    draw() {
-        c.drawImage(
-            this.image,
-            this.framesCurrent * (this.image.width / this.framesMax),
-            0,
-            this.image.width / this.framesMax,
-            this.image.height,
-            this.position.x - this.offset.x,
-            this.position.y - this.offset.y,
-            (this.image.width / this.framesMax) * this.scale,
-            this.image.height * this.scale
-            )
-    }
+        draw() {
+            c.save(); // Save the current canvas state
+            
+            // Check if the sprite is the enemy
+            const isEnemy = this.color === 'blue';
+        
+            // Draw the image with or without flipping based on whether it's the enemy
+            if (isEnemy) {
+                c.translate(this.position.x + (this.image.width / this.framesMax) * this.scale, 0);
+                c.scale(-1, 1);
+            }
+        
+            c.drawImage(
+                this.image,
+                this.framesCurrent * (this.image.width / this.framesMax),
+                0,
+                this.image.width / this.framesMax,
+                this.image.height,
+                (isEnemy ? -this.offset.x : this.position.x - this.offset.x),
+                this.position.y - this.offset.y,
+                (this.image.width / this.framesMax) * this.scale,
+                this.image.height * this.scale
+            );
+        
+            c.restore(); // Restore the canvas state
+        }
+        
 
     animateFrames() {
         this.framesElapsed++
