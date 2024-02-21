@@ -58,7 +58,7 @@ const player = new Fighter({
 
 const enemy = new Fighter({
     position: {
-        x: 400,
+        x: 750,
         y: 100
     },
     velocity: {
@@ -69,6 +69,31 @@ const enemy = new Fighter({
     offset: {
         x: -50,
         y: 0
+    },
+    imageSrc: './img/sprite1/Samurai_Archer/Idle.png',
+    framesMax: 9,
+    scale: 2.5,
+    offset: {
+        x: - 40,
+        y: 170
+    },
+    sprites: {
+        idle : {
+            imageSrc: './img/sprite1/Samurai_Archer/Idle.png',
+            framesMax: 9,
+        },
+        run : {
+            imageSrc: './img/sprite1/Samurai_Archer/Run.png',
+            framesMax: 8,
+        },
+        jump : {
+            imageSrc: './img/sprite1/Samurai_Archer/Jump.png',
+            framesMax: 9,
+        },
+        attack1: {
+            imageSrc: './img/sprite1/Samurai_Archer/attack_2.png',
+            framesMax: 5,
+        }
     }
 })
 
@@ -95,7 +120,7 @@ function animate() {
     c.fillRect(0, 0, canvas.width, canvas.height)
     background.update()
     player.update()
-    // enemy.update()
+    enemy.update()
 
     player.velocity.x = 0
     enemy.velocity.x = 0
@@ -110,7 +135,7 @@ function animate() {
     } else {
         player.switchSprite('idle')
     }
-
+    // Jumping
     if (player.velocity.y < 0) {
         player.switchSprite('jump')
     }
@@ -122,8 +147,17 @@ function animate() {
     // Enemy movement
     if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
         enemy.velocity.x = -5
+        enemy.switchSprite('run')
     } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
         enemy.velocity.x = 5
+        enemy.switchSprite('run')
+    } else {
+    enemy.switchSprite('idle')
+    }
+
+    // Jumping
+    if (enemy.velocity.y < 0) {
+        enemy.switchSprite('jump')
     }
 
     // Collision detect
@@ -188,7 +222,7 @@ window.addEventListener('keydown', (event) => {
             enemy.velocity.y = -20
             break
         case 'ArrowDown':
-            enemy.isAttacking = true
+            enemy.attack()
             break
     }
 })
