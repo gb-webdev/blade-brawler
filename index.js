@@ -44,12 +44,14 @@ const player = new Fighter({
         run : {
             imageSrc: './img/sprite1/samurai/Run.png',
             framesMax: 8,
-            framesHold: 20,
         },
         jump : {
             imageSrc: './img/sprite1/samurai/Jump.png',
             framesMax: 9,
-            framesHold: 30,
+        },
+        attack1: {
+            imageSrc: './img/sprite1/samurai/attack_3.png',
+            framesMax: 4,
         }
     }
 })
@@ -69,8 +71,6 @@ const enemy = new Fighter({
         y: 0
     }
 })
-
-// console.log(player)
 
 const keys = {
     a: {
