@@ -20,17 +20,14 @@ class Sprite {
         }
         
         draw() {
-            c.save(); // Save the current canvas state
+            c.save()
             
-            // Check if the sprite is the enemy
-            const isEnemy = this.color === 'blue';
-        
-            // Draw the image with or without flipping based on whether it's the enemy
+            const isEnemy = this.color === 'blue'
             if (isEnemy) {
-                c.translate(this.position.x + (this.image.width / this.framesMax) * this.scale, 0);
-                c.scale(-1, 1);
+                c.translate(this.position.x + (this.image.width / this.framesMax) * this.scale, 0)
+                c.scale(-1, 1)
             }
-        
+
             c.drawImage(
                 this.image,
                 this.framesCurrent * (this.image.width / this.framesMax),
@@ -41,11 +38,10 @@ class Sprite {
                 this.position.y - this.offset.y,
                 (this.image.width / this.framesMax) * this.scale,
                 this.image.height * this.scale
-            );
+            )
         
-            c.restore(); // Restore the canvas state
+            c.restore()
         }
-        
 
     animateFrames() {
         this.framesElapsed++
@@ -74,7 +70,8 @@ class Fighter extends Sprite{
         scale = 1,
         framesMax = 1,
         offset = { x: 0, y: 0 },
-        sprites
+        sprites,
+        attackBox = { offset: {}, width: undefined, height: undefined }
     }) {
         super({
             position,
@@ -93,9 +90,9 @@ class Fighter extends Sprite{
              x: this.position.x,
              y: this.position.y   
             },
-            offset,
-            width: 100,
-            height: 50
+            offset: attackBox.offset,
+            width: attackBox.width,
+            height: attackBox.height
         }
         this.color = color
         this.isAttacking
@@ -115,13 +112,22 @@ class Fighter extends Sprite{
         this.draw()
         this.animateFrames()
 
+        // Attack boxes
         this.attackBox.position.x = this.position.x + this.attackBox.offset.x
-        this.attackBox.position.y = this.position.y
+        this.attackBox.position.y = this.position.y + this.attackBox.offset.y
+
+        // Draw attack box
+            //     c.fillRect(
+            // this.attackBox.position.x,
+            // this.attackBox.position.y,
+            // this.attackBox.width,
+            // this.attackBox.height
+            // )
 
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
 
-        // Graviity function
+        // Gravity function
         if (this.position.y + this.height + this.velocity.y >= canvas.height -12) {
             this.velocity.y = 0
             this.position.y = 414
@@ -130,10 +136,7 @@ class Fighter extends Sprite{
 
     attack() {
         this.switchSprite('attack1')
-        this.isAttacking = true 
-        setTimeout(() => {
-        this.isAttacking = false
-        }, 100)
+        this.isAttacking = true
     }
 
     switchSprite(sprite) {
