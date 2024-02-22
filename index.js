@@ -53,6 +53,14 @@ const player = new Fighter({
             imageSrc: './img/sprite1/samurai/attack_3.png',
             framesMax: 4,
         }
+    },
+    attackBox: {
+        offset: {
+            x: 120,
+            y: 0
+        },
+        width: 200,
+        height: 50
     }
 })
 
@@ -94,6 +102,14 @@ const enemy = new Fighter({
             imageSrc: './img/sprite1/Samurai_Archer/attack_2.png',
             framesMax: 5,
         }
+    },
+    attackBox: {
+        offset: {
+            x: - 60,
+            y: 0
+        },
+        width: 200,
+        height: 50
     }
 })
 
@@ -166,11 +182,17 @@ function animate() {
         rectangle1: player,
         rectangle2: enemy
     }) &&
-    player.isAttacking
+    player.isAttacking &&
+    player.framesCurrent === 2
     ) {
         player.isAttacking = false
         enemy.health -= 20
         document.querySelector('#enemyHealth').style.width = enemy.health + '%'
+    }
+
+    // If player misses
+    if (player.isAttacking && player.framesCurrent === 4) {
+        player.isAttacking = false
     }
 
     if (
@@ -178,12 +200,17 @@ function animate() {
         rectangle1: enemy,
         rectangle2: player
     }) &&
-    enemy.isAttacking
+    enemy.isAttacking && enemy.framesCurrent === 3
     ) {
         enemy.isAttacking = false
         player.health -= 20
         document.querySelector('#playerHealth').style.width = player.health + '%'
     }
+
+        // If enemy misses
+        if (enemy.isAttacking && enemy.framesCurrent === 4) {
+            enemy.isAttacking = false
+        }
 
         // End game 0 health
         if (enemy.health <= 0 || player.health <= 0) {
