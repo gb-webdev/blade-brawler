@@ -18,7 +18,7 @@ const background = new Sprite({
 
 const player = new Fighter({
     position: {
-        x: 0,
+        x: 100,
         y: 0
     },
     velocity: {
@@ -33,8 +33,8 @@ const player = new Fighter({
     framesMax: 6,
     scale: 2.5,
     offset: {
-        x: - 40,
-        y: 170
+        x: - 60 + 100,
+        y: 250 - 100
     },
     sprites: {
         idle : {
@@ -50,9 +50,13 @@ const player = new Fighter({
             framesMax: 9,
         },
         attack1: {
-            imageSrc: './img/sprite1/samurai/attack_3.png',
+            imageSrc: './img/sprite1/samurai/Attack_3.png',
             framesMax: 4,
-        }
+        },
+        takeHit: {
+            imageSrc: './img/sprite1/samurai/Hurt.png',
+            framesMax: 3,
+        },
     },
     attackBox: {
         offset: {
@@ -82,8 +86,8 @@ const enemy = new Fighter({
     framesMax: 9,
     scale: 2.5,
     offset: {
-        x: - 40,
-        y: 170
+        x: - 40 - 80,
+        y: 170 - 30
     },
     sprites: {
         idle : {
@@ -101,7 +105,11 @@ const enemy = new Fighter({
         attack1: {
             imageSrc: './img/sprite1/Samurai_Archer/attack_2.png',
             framesMax: 5,
-        }
+        },
+        takeHit: {
+            imageSrc: './img/sprite1/Samurai_Archer/Hurt.png',
+            framesMax: 3,
+        },
     },
     attackBox: {
         offset: {
@@ -176,7 +184,7 @@ function animate() {
         enemy.switchSprite('jump')
     }
 
-    // Collision detect
+    // Collision detect & enemy hit
     if (
     rectangularCollision({
         rectangle1: player,
@@ -185,8 +193,8 @@ function animate() {
     player.isAttacking &&
     player.framesCurrent === 2
     ) {
+        enemy.takeHit()
         player.isAttacking = false
-        enemy.health -= 20
         document.querySelector('#enemyHealth').style.width = enemy.health + '%'
     }
 
@@ -195,15 +203,17 @@ function animate() {
         player.isAttacking = false
     }
 
+    // Collision detect & player hit
     if (
     rectangularCollision({
         rectangle1: enemy,
         rectangle2: player
     }) &&
-    enemy.isAttacking && enemy.framesCurrent === 3
+    enemy.isAttacking &&
+    enemy.framesCurrent === 3
     ) {
+        player.takeHit()
         enemy.isAttacking = false
-        player.health -= 20
         document.querySelector('#playerHealth').style.width = player.health + '%'
     }
 
