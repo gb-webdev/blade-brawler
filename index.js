@@ -18,7 +18,7 @@ const background = new Sprite({
 
 const player = new Fighter({
     position: {
-        x: 100,
+        x: 70,
         y: 0
     },
     velocity: {
@@ -29,48 +29,52 @@ const player = new Fighter({
         x: 0,
         y: 0
     },
-    imageSrc: './img/sprite1/samurai/Idle.png',
-    framesMax: 6,
+    imageSrc: './img/samurai/Sprites/Idle.png',
+    framesMax: 8,
     scale: 2.5,
     offset: {
-        x: - 60 + 100,
-        y: 250 - 100
+        x: 200,
+        y: 127
     },
     sprites: {
-        idle : {
-            imageSrc: './img/sprite1/samurai/Idle.png',
-            framesMax: 6,
-        },
-        run : {
-            imageSrc: './img/sprite1/samurai/Run.png',
-            framesMax: 8,
-        },
-        jump : {
-            imageSrc: './img/sprite1/samurai/Jump.png',
-            framesMax: 9,
-        },
-        attack1: {
-            imageSrc: './img/sprite1/samurai/Attack_3.png',
-            framesMax: 4,
-        },
-        takeHit: {
-            imageSrc: './img/sprite1/samurai/Hurt.png',
-            framesMax: 3,
-        },
+        idle: {
+            imageSrc: './img/samurai/Sprites/Idle.png',
+            framesMax: 8
+          },
+          run: {
+            imageSrc: './img/samurai/Sprites/Run.png',
+            framesMax: 8
+          },
+          jump: {
+            imageSrc: './img/samurai/Sprites/Jump.png',
+            framesMax: 2
+          },
+          fall: {
+            imageSrc: './img/samurai/Sprites/Fall.png',
+            framesMax: 2
+          },
+          attack1: {
+            imageSrc: './img/samurai/Sprites/Attack1.png',
+            framesMax: 6
+          },
+          takeHit: {
+            imageSrc: './img/samurai/Sprites/Take Hit - white silhouette.png',
+            framesMax: 4
+          },
     },
     attackBox: {
         offset: {
-            x: 120,
-            y: 0
+            x: 100,
+            y: 50
         },
-        width: 200,
+        width: 160,
         height: 50
     }
 })
 
 const enemy = new Fighter({
     position: {
-        x: 750,
+        x: 810,
         y: 100
     },
     velocity: {
@@ -82,41 +86,45 @@ const enemy = new Fighter({
         x: -50,
         y: 0
     },
-    imageSrc: './img/sprite1/Samurai_Archer/Idle.png',
-    framesMax: 9,
+    imageSrc: './img/ninja/Sprites/Idle.png',
+    framesMax: 4,
     scale: 2.5,
     offset: {
-        x: - 40 - 80,
-        y: 170 - 30
+        x: - 220,
+        y: 140
     },
     sprites: {
         idle : {
-            imageSrc: './img/sprite1/Samurai_Archer/Idle.png',
-            framesMax: 9,
+            imageSrc: './img/ninja/Sprites/Idle.png',
+            framesMax: 4,
         },
         run : {
-            imageSrc: './img/sprite1/Samurai_Archer/Run.png',
+            imageSrc: './img/ninja/Sprites/Run.png',
             framesMax: 8,
         },
         jump : {
-            imageSrc: './img/sprite1/Samurai_Archer/Jump.png',
-            framesMax: 9,
+            imageSrc: './img/ninja/Sprites/Jump.png',
+            framesMax: 2,
+        },
+        fall : {
+            imageSrc: './img/ninja/Sprites/Fall.png',
+            framesMax: 2,
         },
         attack1: {
-            imageSrc: './img/sprite1/Samurai_Archer/attack_2.png',
-            framesMax: 5,
+            imageSrc: './img/ninja/Sprites/attack1.png',
+            framesMax: 4,
         },
         takeHit: {
-            imageSrc: './img/sprite1/Samurai_Archer/Hurt.png',
+            imageSrc: './img/ninja/Sprites/Take hit.png',
             framesMax: 3,
         },
     },
     attackBox: {
         offset: {
-            x: - 60,
-            y: 0
+            x: - 170,
+            y: 50
         },
-        width: 200,
+        width: 170,
         height: 50
     }
 })
@@ -147,26 +155,25 @@ function animate() {
     enemy.update()
 
     player.velocity.x = 0
-    enemy.velocity.x = 0
+    enemy.velocity.x = 0    
 
     // Player movement
     if (keys.a.pressed && player.lastKey === 'a') {
         player.velocity.x = -5
         player.switchSprite('run')
-    } else if (keys.d.pressed && player.lastKey === 'd') {
+      } else if (keys.d.pressed && player.lastKey === 'd') {
         player.velocity.x = 5
         player.switchSprite('run')
-    } else {
+      } else {
         player.switchSprite('idle')
-    }
-    // Jumping
-    if (player.velocity.y < 0) {
+      }
+    
+      // Jumping
+      if (player.velocity.y < 0) {
         player.switchSprite('jump')
-    }
-
-    if (player.velocity.x > 0 && player.velocity.x < 0) {
-        player.framesMax = player.sprites.run.framesMax
-    }
+      } else if (player.velocity.y > 0) {
+        player.switchSprite('fall')
+      }
 
     // Enemy movement
     if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
@@ -176,12 +183,14 @@ function animate() {
         enemy.velocity.x = 5
         enemy.switchSprite('run')
     } else {
-    enemy.switchSprite('idle')
+        enemy.switchSprite('idle')
     }
 
-    // Jumping
+    // jumping
     if (enemy.velocity.y < 0) {
         enemy.switchSprite('jump')
+    } else if (enemy.velocity.y > 0) {
+        enemy.switchSprite('fall')
     }
 
     // Collision detect & enemy hit
@@ -191,7 +200,7 @@ function animate() {
         rectangle2: enemy
     }) &&
     player.isAttacking &&
-    player.framesCurrent === 2
+    player.framesCurrent === 4
     ) {
         enemy.takeHit()
         player.isAttacking = false
@@ -210,7 +219,7 @@ function animate() {
         rectangle2: player
     }) &&
     enemy.isAttacking &&
-    enemy.framesCurrent === 3
+    enemy.framesCurrent === 2
     ) {
         player.takeHit()
         enemy.isAttacking = false
@@ -218,7 +227,7 @@ function animate() {
     }
 
         // If enemy misses
-        if (enemy.isAttacking && enemy.framesCurrent === 4) {
+        if (enemy.isAttacking && enemy.framesCurrent === 2) {
             enemy.isAttacking = false
         }
 
@@ -266,20 +275,21 @@ window.addEventListener('keydown', (event) => {
 
 window.addEventListener('keyup', (event) => {
     switch (event.key) {
-        case 'd':
-            keys.d.pressed = false
-            break
-        case 'a':
-            keys.a.pressed = false
-            break
-    }  
-    // Enemy keys
-    switch (event.key) {
-        case 'ArrowRight':
-            keys.ArrowRight.pressed = false
-            break
-        case 'ArrowLeft':
-            keys.ArrowLeft.pressed = false
-            break
+      case 'd':
+        keys.d.pressed = false
+        break
+      case 'a':
+        keys.a.pressed = false
+        break
     }
-})
+  
+    // enemy keys
+    switch (event.key) {
+      case 'ArrowRight':
+        keys.ArrowRight.pressed = false
+        break
+      case 'ArrowLeft':
+        keys.ArrowLeft.pressed = false
+        break
+    }
+  })
