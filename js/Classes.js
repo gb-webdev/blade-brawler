@@ -151,9 +151,9 @@ class Fighter extends Sprite{
 
     takeHit() {
         if (this.color === 'red') { // Samurai
-            this.health -= 10; // Decrease by 10 for samurai
+            this.health -= 10
         } else if (this.color === 'blue') { // Ninja
-            this.health -= 20; // Decrease by 20 for ninja
+            this.health -= 20
         }
     
         if (this.health <= 0) {
