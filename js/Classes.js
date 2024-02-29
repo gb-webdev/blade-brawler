@@ -125,6 +125,7 @@ class Fighter extends Sprite{
         //     this.attackBox.height
         //     )
 
+        // // Draw character hit box
         // c.fillStyle = this.color;
         // c.fillRect(
         //     this.position.x,
@@ -149,11 +150,17 @@ class Fighter extends Sprite{
     }
 
     takeHit() {
-        this.health -= 20
-
+        if (this.color === 'red') { // Samurai
+            this.health -= 10; // Decrease by 10 for samurai
+        } else if (this.color === 'blue') { // Ninja
+            this.health -= 20; // Decrease by 20 for ninja
+        }
+    
         if (this.health <= 0) {
-            this.switchSprite('death')
-        } else this.switchSprite('takeHit')
+            this.switchSprite('death');
+        } else {
+            this.switchSprite('takeHit');
+        }
     }
 
     switchSprite(sprite) {

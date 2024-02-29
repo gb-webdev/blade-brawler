@@ -129,7 +129,7 @@ const enemy = new Fighter({
     },
     attackBox: {
         offset: {
-            x: - 170,
+            x: - 220,
             y: 50
         },
         width: 170,
@@ -187,10 +187,10 @@ function animate() {
 
     // Enemy movement
     if (keys.ArrowLeft.pressed && enemy.lastKey === 'ArrowLeft') {
-        enemy.velocity.x = -5
+        enemy.velocity.x = -10
         enemy.switchSprite('run')
     } else if (keys.ArrowRight.pressed && enemy.lastKey === 'ArrowRight') {
-        enemy.velocity.x = 5
+        enemy.velocity.x = 10
         enemy.switchSprite('run')
     } else {
         enemy.switchSprite('idle')
@@ -255,47 +255,46 @@ animate()
 
 window.addEventListener('keydown', (event) => {
     if (!player.dead) {
-
-    switch (event.key) {
+      switch (event.key) {
         case 'd':
-            keys.d.pressed = true
-            player.lastKey = 'd'
-            break
+          keys.d.pressed = true
+          player.lastKey = 'd'
+          break
         case 'a':
-            keys.a.pressed = true
-            player.lastKey = 'a'
-            break
+          keys.a.pressed = true
+          player.lastKey = 'a'
+          break
         case 'w':
-            player.velocity.y = -20
-            break
+            if (player.velocity.y === 0) player.velocity.y = -20;
+          break
         case ' ':
-            player.attack()
-            break
-            
-
+          player.attack()
+          break
+      }
     }
-}
+  
     if (!enemy.dead) {
-    switch(event.key) {
+      switch (event.key) {
         case 'ArrowRight':
-            keys.ArrowRight.pressed = true
-            enemy.lastKey = 'ArrowRight'
-            break
+          keys.ArrowRight.pressed = true
+          enemy.lastKey = 'ArrowRight'
+          break
         case 'ArrowLeft':
-            keys.ArrowLeft.pressed = true
-            enemy.lastKey = 'ArrowLeft'
-            break
+          keys.ArrowLeft.pressed = true
+          enemy.lastKey = 'ArrowLeft'
+          break
         case 'ArrowUp':
-            enemy.velocity.y = -20
-            break
+            if (enemy.velocity.y === 0) enemy.velocity.y = -20;
+          break
         case 'ArrowDown':
-            enemy.attack()
-            break
+          enemy.attack()
+  
+          break
+      }
     }
-}
-})
-
-window.addEventListener('keyup', (event) => {
+  })
+  
+  window.addEventListener('keyup', (event) => {
     switch (event.key) {
       case 'd':
         keys.d.pressed = false
